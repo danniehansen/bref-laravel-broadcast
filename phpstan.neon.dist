@@ -1,0 +1,9 @@
+parameters:
+  level: 8
+  fileExtensions:
+    - php
+  paths:
+    - src
+  checkMissingIterableValueType: false
+  checkGenericClassInNonGenericObjectType: false
+  treatPhpDocTypesAsCertain: false

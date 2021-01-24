@@ -1,0 +1,6 @@
+.idea
+vendor
+composer.lock
+phpunit.xml
+clover.xml
+.phpunit.result.cache

@@ -1,0 +1,63 @@
+name: Test workflow
+
+on: [push, pull_request]
+
+jobs:
+  test74:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup PHP 74
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
+
+    - name: Validate composer.json
+      run: composer validate
+
+    - name: Install dependencies
+      run: composer install --dev --prefer-dist --no-progress --no-suggest
+
+    - name: Validate that code meets PSR12 standard
+      run: composer run-script phpcs
+
+    - name: Run PHPUnit
+      run: vendor/bin/phpunit --coverage-clover=coverage.xml
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        fail_ci_if_error: true
+
+    - name: Run PHPStan
+      run: vendor/bin/phpstan analyse
+  test80:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP 80
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+
+      - name: Validate composer.json
+        run: composer validate
+
+      - name: Install dependencies
+        run: composer install --dev --prefer-dist --no-progress --no-suggest
+
+      - name: Validate that code meets PSR12 standard
+        run: composer run-script phpcs
+
+      - name: Run PHPUnit
+        run: vendor/bin/phpunit --coverage-clover=coverage.xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
+
+      - name: Run PHPStan
+        run: vendor/bin/phpstan analyse
