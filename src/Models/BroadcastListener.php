@@ -15,13 +15,12 @@ use Illuminate\Support\Carbon;
  * @property string $api_id
  * @property string $region
  * @property string $stage
- * @property Carbon $created_at
- * @property Carbon $updated_at
  */
 final class BroadcastListener extends Model
 {
     protected $primaryKey = 'listener_id';
     protected $table = 'broadcast_listener';
+    protected $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
