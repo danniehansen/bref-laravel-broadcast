@@ -20,7 +20,7 @@ final class BroadcastListener extends Model
 {
     protected $primaryKey = 'listener_id';
     protected $table = 'broadcast_listener';
-    protected $timestamps = false;
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.

@@ -10,13 +10,16 @@ class BroadcastReceiveListener
     {
         $model = config('bref_laravel_broadcast.model');
 
-        echo "receive";
-
         switch ($event->getType()) {
             case 'DISCONNECT':
                 $model::query()
                     ->where('connection_id', '=', $event->getConnectionId())
-                    ->delete();
+                    ->get()
+                    ->each(
+                        static function ($model) {
+                            $model->delete();
+                        }
+                    );
                 break;
 
             case 'MESSAGE':
@@ -24,7 +27,6 @@ class BroadcastReceiveListener
                     ($body = $event->getBody()) &&
                     ($channel = $body['listen_channel'] ?? null)
                 ) {
-                    print_r($model);
                     $model::createListener(
                         $channel,
                         $event->getConnectionId(),
