@@ -29,7 +29,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "BrefLaravelBroadcast\\Providers\\BroadcastServiceProvider"
+                "BrefLaravelBroadcast\\Providers\\BroadcastServiceProvider",
+                "BrefLaravelBroadcast\\Providers\\EventServiceProvider"
             ],
             "aliases": {
                 "Menu": "Lavary\\Menu\\Facade"
