@@ -28,6 +28,7 @@ class BroadcastServiceProvider extends ServiceProvider
             __DIR__ . '/../Migrations/' => database_path('/migrations')
         ], 'migrations');
 
+        // @phpstan-ignore-next-line
         Broadcast::extend('bref', function () {
             return new BrefBroadcaster();
         });

@@ -50,7 +50,7 @@ final class BroadcastListener extends Model
         string $region,
         string $stage
     ): self {
-        $row = new self();
+        $row = new static();
         $row->channel = $channel;
         $row->connection_id = $connectionId;
         $row->api_id = $apiId;

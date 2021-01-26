@@ -23,7 +23,7 @@ class BrefBroadcaster extends Broadcaster
     {
         return $this->verifyUserCanAccessChannel(
             $request,
-            $request->channel_name
+            $request->input('channel_name')
         );
     }
 
