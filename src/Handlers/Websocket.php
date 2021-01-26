@@ -16,7 +16,7 @@ class Websocket extends WebsocketHandler
             $event->getEventType(),
             $event->getConnectionId(),
             $event->getApiId(),
-            'eu-west-1',
+            $event->getRegion(),
             $event->getStage(),
             (($body = $event->getBody()) ?
                 json_decode($body, true, 512, JSON_THROW_ON_ERROR) :

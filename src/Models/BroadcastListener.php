@@ -3,7 +3,6 @@
 namespace BrefLaravelBroadcast\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 
 /**
  * Class BroadcastListener

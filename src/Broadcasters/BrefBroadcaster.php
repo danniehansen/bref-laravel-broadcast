@@ -3,7 +3,6 @@
 namespace BrefLaravelBroadcast\Broadcasters;
 
 use Bref\Websocket\SimpleWebsocketClient;
-use BrefLaravelBroadcast\Models\BroadcastListener;
 use Illuminate\Broadcasting\Broadcasters\Broadcaster;
 use Illuminate\Broadcasting\BroadcastException;
 use Illuminate\Http\Request;
@@ -55,24 +54,23 @@ class BrefBroadcaster extends Broadcaster
      */
     public function broadcast(array $channels, $event, array $payload = [])
     {
+        $model = config('bref_laravel_broadcast.model');
         $clientCache = [];
 
-        BroadcastListener::query()
+        $model::query()
             ->whereIn('channel', $channels)
             ->get()
             ->each(
-                static function (BroadcastListener $listener) use (&$event, &$payload, &$clientCache) {
+                static function ($listener) use (&$event, &$payload, &$clientCache) {
                     $cacheKey = $listener->api_id . $listener->stage . $listener->region;
 
-                    if (!isset($clientCache[$cacheKey])) {
-                        $clientCache[$cacheKey] = SimpleWebsocketClient::create(
-                            $listener->api_id,
-                            $listener->region,
-                            $listener->stage
-                        );
-                    }
+                    $client = $clientCache[$cacheKey] = $clientCache[$cacheKey] ?? SimpleWebsocketClient::create(
+                        $listener->api_id,
+                        $listener->region,
+                        $listener->stage
+                    );
 
-                    $clientCache[$cacheKey]->message(
+                    $client->message(
                         $listener->connection_id,
                         json_encode(
                             [
