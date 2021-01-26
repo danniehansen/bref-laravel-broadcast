@@ -34,7 +34,6 @@ class BroadcastReceiveListener
                         $event->getRegion(),
                         $event->getStage()
                     );
-
                 } else {
                     $event->setResponseCode(500);
                     $event->setResponseText('invalid event payload');

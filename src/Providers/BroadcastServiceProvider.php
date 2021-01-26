@@ -13,7 +13,7 @@ class BroadcastServiceProvider extends ServiceProvider
         parent::register();
 
         $this->mergeConfigFrom(
-            __DIR__.'/../../config.php',
+            __DIR__ . '/../../config.php',
             'bref_laravel_broadcast'
         );
     }
@@ -21,11 +21,11 @@ class BroadcastServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->publishes([
-            __DIR__.'/../../config.php' => config_path('bref_laravel_broadcast.php'),
+            __DIR__ . '/../../config.php' => config_path('bref_laravel_broadcast.php'),
         ], 'config');
 
         $this->publishes([
-            __DIR__.'/../Migrations/' => database_path('/migrations')
+            __DIR__ . '/../Migrations/' => database_path('/migrations')
         ], 'migrations');
 
         Broadcast::extend('bref', function () {

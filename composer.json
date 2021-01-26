@@ -7,7 +7,7 @@
     "prefer-stable": true,
     "version": "0.0.1",
     "scripts": {
-        "phpcs": "phpcs --standard=PSR12 ./src ./tests"
+        "phpcs": "phpcs --standard=PSR12 ./src/Broadcasters ./src/Events ./src/Handlers ./src/Listeners ./src/Models ./src/Providers ./tests"
     },
     "require": {
         "php": "^7.4|^8.0",
