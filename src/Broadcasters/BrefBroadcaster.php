@@ -4,6 +4,7 @@ namespace BrefLaravelBroadcast\Broadcasters;
 
 use Bref\Websocket\SimpleWebsocketClient;
 use Illuminate\Broadcasting\Broadcasters\Broadcaster;
+use Illuminate\Broadcasting\Broadcasters\UsePusherChannelConventions;
 use Illuminate\Broadcasting\BroadcastException;
 use Illuminate\Http\Request;
 use JsonException;
@@ -21,9 +22,11 @@ class BrefBroadcaster extends Broadcaster
      */
     public function auth($request)
     {
-        return $this->verifyUserCanAccessChannel(
+        $channelName = str_replace($this->prefix, '', $request->channel_name);
+
+        return parent::verifyUserCanAccessChannel(
             $request,
-            $request->input('channel_name')
+            $channelName
         );
     }
 
@@ -37,7 +40,18 @@ class BrefBroadcaster extends Broadcaster
      */
     public function validAuthenticationResponse($request, $result)
     {
-        return null;
+        if (is_bool($result)) {
+            return json_encode($result);
+        }
+
+        $channelName = $request->channel_name;
+
+        return json_encode([
+            'channel_data' => [
+                'user_id' => $this->retrieveUser($request, $channelName)->getAuthIdentifier(),
+                'user_info' => $result,
+            ]
+        ]);
     }
 
     /**
@@ -54,11 +68,15 @@ class BrefBroadcaster extends Broadcaster
      */
     public function broadcast(array $channels, $event, array $payload = [])
     {
+        if (empty($channels)) {
+            return;
+        }
+
         $model = config('bref_laravel_broadcast.model');
         $clientCache = [];
 
         $model::query()
-            ->whereIn('channel', $channels)
+            ->whereIn('channel', $this->formatChannels($channels))
             ->get()
             ->each(
                 static function ($listener) use (&$event, &$payload, &$clientCache) {
@@ -76,12 +94,26 @@ class BrefBroadcaster extends Broadcaster
                             [
                                 'channel' => $listener->channel,
                                 'event' => $event,
-                                'payload' => $payload,
+                                'data' => $payload,
                             ],
                             JSON_THROW_ON_ERROR
                         )
                     );
                 }
             );
+    }
+
+    /**
+     * Format the channel array into an array of strings.
+     *
+     * @param array $channels
+     *
+     * @return array
+     */
+    protected function formatChannels(array $channels)
+    {
+        return array_map(function ($channel) {
+            return $this->prefix . $channel;
+        }, parent::formatChannels($channels));
     }
 }
