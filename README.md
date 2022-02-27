@@ -2,6 +2,8 @@
 [![codecov](https://codecov.io/gh/danniehansen/bref-laravel-broadcast/branch/master/graph/badge.svg)](https://codecov.io/gh/danniehansen/bref-laravel-broadcast)
 ![](https://github.com/danniehansen/bref-laravel-broadcast/workflows/Test%20workflow/badge.svg?branch=master)
 
+# NOT YET PRODUCTION READY
+
 ## Introduction
 
 This package implements the `bref` broadcast driver & allows you to utilize [bref.sh](https://bref.sh/) to build a serverless Websocket implementation with API Gateway Websockets & Lambda.
